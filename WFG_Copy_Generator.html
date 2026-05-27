@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WFG Marketing Copy Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --forest: #435B5C;
+    --evergreen: #2B3C3F;
+    --powder-clay: #E7E2DE;
+    --clay: #B7B1B1;
+    --white: #FFFFFF;
+    --off-white: #F7F5F3;
+    --light-border: #E0DAD5;
+    --text-primary: #1E2A2B;
+    --text-secondary: #5A6B6C;
+    --text-muted: #8A9A9B;
+    --radius: 8px;
+    --radius-lg: 14px;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--off-white);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  header {
+    background: var(--evergreen);
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .logo-mark {
+    width: 36px;
+    height: 36px;
+    background: var(--powder-clay);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .logo-mark span {
+    font-family: 'DM Serif Display', serif;
+    font-size: 16px;
+    color: var(--evergreen);
+    letter-spacing: -0.5px;
+  }
+
+  .header-text h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--powder-clay);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+
+  .header-text p {
+    font-size: 12px;
+    color: var(--clay);
+    margin-top: 2px;
+    font-weight: 300;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--light-border);
+    padding: 1.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .card-title {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field.full { grid-column: 1 / -1; }
+
+  label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  input[type="text"], select, textarea {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text-primary);
+    background: var(--off-white);
+    border: 1px solid var(--light-border);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    width: 100%;
+    transition: border-color 0.15s;
+    outline: none;
+    -webkit-appearance: none;
+  }
+
+  input[type="text"]:focus, select:focus, textarea:focus {
+    border-color: var(--forest);
+    background: var(--white);
+  }
+
+  textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235A6B6C' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+    cursor: pointer;
+  }
+
+  .tone-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .tb {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--light-border);
+    background: var(--off-white);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .tb:hover { border-color: var(--forest); color: var(--forest); }
+
+  .tb.on {
+    background: var(--forest);
+    color: var(--white);
+    border-color: var(--forest);
+  }
+
+  .gen-btn {
+    width: 100%;
+    padding: 13px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    background: var(--evergreen);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background 0.15s, opacity 0.15s;
+    letter-spacing: 0.01em;
+  }
+
+  .gen-btn:hover:not(:disabled) { background: var(--forest); }
+  .gen-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .status {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 10px;
+    min-height: 20px;
+    text-align: center;
+  }
+
+  .out-section { display: none; margin-top: 1.25rem; }
+
+  .out-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--light-border);
+    margin-bottom: 0;
+  }
+
+  .otab {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    padding: 10px 18px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.15s;
+  }
+
+  .otab:hover { color: var(--forest); }
+  .otab.on { color: var(--evergreen); border-bottom-color: var(--evergreen); font-weight: 500; }
+
+  .opanel { display: none; }
+  .opanel.on { display: block; }
+
+  .obox {
+    background: var(--off-white);
+    border: 1px solid var(--light-border);
+    border-top: none;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+    min-height: 120px;
+  }
+
+  .copy-row {
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px 1.5rem 1rem;
+    background: var(--off-white);
+    border: 1px solid var(--light-border);
+    border-top: none;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    margin-top: -1px;
+  }
+
+  .cbtn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    color: var(--text-secondary);
+    border: 1px solid var(--light-border);
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 5px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.15s;
+  }
+
+  .cbtn:hover { border-color: var(--forest); color: var(--forest); }
+
+  .cbtn svg { width: 14px; height: 14px; }
+
+  .info-bar {
+    background: var(--powder-clay);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--evergreen);
+    margin-bottom: 1.25rem;
+    line-height: 1.5;
+  }
+
+  .info-bar strong { font-weight: 500; }
+
+  .dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--forest);
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  @media (max-width: 600px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .field.full { grid-column: 1; }
+    header { padding: 1.25rem; }
+    .container { padding: 1.25rem 1rem 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-mark"><span>W</span></div>
+  <div class="header-text">
+    <h1>Marketing Copy Generator</h1>
+    <p>Woodland Furniture Group — Internal Marketing Tool</p>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="info-bar">
+    <span class="dot"></span>
+    <strong>How to use:</strong> Fill in the range name and a short brief, choose your audience and tone, then hit Generate. Copy outputs directly into Hootsuite, Mailchimp, or your brochure.
+  </div>
+
+  <div class="card">
+    <div class="card-title">Brief</div>
+    <div class="form-grid">
+      <div class="field">
+        <label>Range or product name</label>
+        <input type="text" id="rname" placeholder="e.g. Wakehurst, Procab, Sintered Stone" />
+      </div>
+      <div class="field">
+        <label>Output format</label>
+        <select id="otype">
+          <option value="all">All three formats</option>
+          <option value="social">Social post only</option>
+          <option value="email">Email copy only</option>
+          <option value="product">Product description only</option>
+        </select>
+      </div>
+      <div class="field full">
+        <label>What do you want to communicate?</label>
+        <textarea id="brief" placeholder="e.g. New handleless design launching for spring. Available in 6 colours including Cashmere and Graphite. Targeting homeowners who want a contemporary, timeless kitchen."></textarea>
+      </div>
+      <div class="field">
+        <label>Target audience</label>
+        <select id="aud">
+          <option value="homeowners">Homeowners / consumers</option>
+          <option value="trade">Trade / contractors</option>
+          <option value="developers">Developers / procurement</option>
+          <option value="retailers">Retailers / partners</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Tone</label>
+        <div class="tone-row">
+          <button class="tb on" data-t="premium">Premium</button>
+          <button class="tb" data-t="warm">Warm</button>
+          <button class="tb" data-t="bold">Bold</button>
+          <button class="tb" data-t="informative">Informative</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="gen-btn" id="gbtn" onclick="run()">Generate copy</button>
+  <div class="status" id="st"></div>
+
+  <div class="out-section" id="os">
+    <div class="card" style="padding: 0; overflow: hidden;">
+      <div class="out-tabs" id="ot"></div>
+      <div id="op"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ─── BRAND VOICE — update this section when your WFG brand voice document is ready ───
+  const BRAND_VOICE = `You are a marketing copywriter for Woodland Furniture Group (WFG), a premium KBB (Kitchen, Bathroom, Bedroom) manufacturer operating across Northern Ireland, Scotland, and North East England.
+
+Their consumer-facing brand is Living by WFG, covering kitchen and bedroom furniture ranges sold through retail partners and direct to homeowners. Their trade and developer-facing brand is Procab by WFG, targeting contractors, developers, and procurement professionals on large-scale residential and commercial schemes.
+
+WFG brand voice:
+- Warm but aspirational. Grounded in real craftsmanship and honest quality.
+- Clear and confident without being corporate or hollow.
+- Speaks to people making meaningful decisions about their homes — not just buying furniture.
+- Avoids clichés, buzzwords, and pushy sales language.
+- Premium but never cold or distant. Accessible without being downmarket.
+- Distinctly British in character — understated, considered, quality-led.
+- For trade/developer audiences (Procab): more direct, specification-focused, commercially confident.
+- For consumer audiences (Living by WFG): warmer, lifestyle-led, design-forward.
+
+Range names include: Wakehurst, Tanadice, Dundonald, Sintered Stone, and others across the Living by WFG portfolio.`;
+  // ─────────────────────────────────────────────────────────────────────────────────────
+
+  const API_KEY = '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';
+
+  let tone = 'premium';
+
+  document.querySelectorAll('.tb').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.tb').forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    tone = b.dataset.t;
+  }));
+
+  function switchTab(i) {
+    document.querySelectorAll('.otab').forEach((t, j) => t.classList.toggle('on', i === j));
+    document.querySelectorAll('.opanel').forEach((p, j) => p.classList.toggle('on', i === j));
+  }
+
+  async function run() {
+    const rname = document.getElementById('rname').value.trim();
+    const brief = document.getElementById('brief').value.trim();
+    const otype = document.getElementById('otype').value;
+    const aud = document.getElementById('aud').value;
+
+    if (!brief) {
+      document.getElementById('st').textContent = 'Please add a brief before generating.';
+      return;
+    }
+
+    const btn = document.getElementById('gbtn');
+    btn.disabled = true;
+    document.getElementById('st').textContent = 'Generating your copy…';
+
+    const audMap = {
+      homeowners: 'homeowners and consumers considering a kitchen or bedroom purchase',
+      trade: 'trade professionals and contractors',
+      developers: 'property developers and procurement professionals',
+      retailers: 'retail partners and KBB dealers'
+    };
+
+    const keys = otype === 'all' ? ['social', 'email', 'product'] : [otype];
+    const labels = { social: 'Social post', email: 'Email copy', product: 'Product description' };
+    const instruct = {
+      social: 'Write a social media post suitable for Instagram and Facebook. Write 2–3 sentences of engaging, on-brand copy followed by 5–8 relevant hashtags on a new line. Do not use quotation marks around the copy.',
+      email: 'Write email marketing copy. Start with a compelling subject line on its own line prefixed exactly "Subject:". Then write the email body in 3–4 short paragraphs, ending with a clear and natural call to action.',
+      product: 'Write a product or range description suitable for a website or printed brochure. Write 2–3 well-crafted paragraphs. Focus on design quality, materials, lifestyle appeal, and craftsmanship. Do not use bullet points.'
+    };
+
+    const sys = `${BRAND_VOICE}
+
+The current tone requested is: ${tone}.
+
+Write ONLY the requested copy. No preamble, no labels, no explanation before or after. Just the copy itself.`;
+
+    const tabsEl = document.getElementById('ot');
+    const panelsEl = document.getElementById('op');
+    const section = document.getElementById('os');
+
+    tabsEl.innerHTML = '';
+    panelsEl.innerHTML = '';
+    section.style.display = 'block';
+
+    keys.forEach((k, i) => {
+      const tab = document.createElement('button');
+      tab.className = 'otab' + (i === 0 ? ' on' : '');
+      tab.textContent = labels[k];
+      tab.onclick = () => switchTab(i);
+      tabsEl.appendChild(tab);
+
+      const panel = document.createElement('div');
+      panel.className = 'opanel' + (i === 0 ? ' on' : '');
+      panel.innerHTML = `<div class="obox" id="bx-${k}">Generating…</div><div class="copy-row"><button class="cbtn" id="cp-${k}" onclick="cp('${k}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy text</button></div>`;
+      panelsEl.appendChild(panel);
+    });
+
+    let done = 0;
+
+    await Promise.all(keys.map(async k => {
+      const prompt = `Range / product name: ${rname || 'not specified'}
+Target audience: ${audMap[aud]}
+Brief: ${brief}
+
+Task: ${instruct[k]}`;
+
+      const box = document.getElementById('bx-' + k);
+
+      try {
+        const res = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': API_KEY,
+            'anthropic-version': '2023-06-01',
+            'anthropic-dangerous-direct-browser-access': 'true'
+          },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 1000,
+            system: sys,
+            messages: [{ role: 'user', content: prompt }],
+            stream: true
+          })
+        });
+
+        box.textContent = '';
+        const reader = res.body.getReader();
+        const dec = new TextDecoder();
+        let buf = '';
+
+        while (true) {
+          const { done: d, value } = await reader.read();
+          if (d) break;
+          buf += dec.decode(value, { stream: true });
+          const lines = buf.split('\n');
+          buf = lines.pop();
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              const raw = line.slice(6).trim();
+              if (raw === '[DONE]') break;
+              try {
+                const p = JSON.parse(raw);
+                if (p.type === 'content_block_delta' && p.delta?.text) {
+                  box.textContent += p.delta.text;
+                }
+              } catch {}
+            }
+          }
+        }
+
+        done++;
+        document.getElementById('st').textContent =
+          done === keys.length ? 'Done — your copy is ready.' : `${done} of ${keys.length} complete…`;
+
+      } catch (err) {
+        box.textContent = 'Something went wrong generating this output. Please try again.';
+        console.error(err);
+      }
+    }));
+
+    btn.disabled = false;
+  }
+
+  function cp(k) {
+    const text = document.getElementById('bx-' + k).textContent;
+    navigator.clipboard.writeText(text).catch(() => {});
+    const btn = document.getElementById('cp-' + k);
+    const orig = btn.innerHTML;
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied`;
+    setTimeout(() => { btn.innerHTML = orig; }, 2000);
+  }
+</script>
+</body>
+</html>
